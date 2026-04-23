@@ -1,3 +1,5 @@
+use std::{env::var, io::Bytes};
+
 fn main() {
     let _s = String::from("hello"); // Allocate Memo accordingly using ::from
 
@@ -24,6 +26,17 @@ fn main() {
 
     let (srt1, srt1_len) = calculate_length(srt1);
 
+    println!("length of {srt1} is {srt1_len}");
+
+
+    // Slices
+    let mut variable = String::from("Hello World");
+
+    let _space_idx = get_first_space_idx(&variable);
+
+    let result = get_first_space_word(&variable);
+    // variable.clear();        // cannot borrow `variable` as mutable because it is also borrowed as immutable mutable borrow occurs hererustcClick
+    println!("ans from ref fn is -> {result}");
     
 
 }
@@ -36,4 +49,30 @@ fn takes_ownership(some_string: String) -> String { // some_string comes into sc
 fn calculate_length(s: String) -> (String, usize) {
     let length = s.len();
     (s,length)
+}
+
+
+fn get_first_space_idx(input: &str) -> usize {
+    let bytes_str = input.as_bytes();
+
+    for (i, &item) in bytes_str.iter().enumerate(){
+        if item == b' ' {
+            return i;
+        }
+    };
+    
+    input.len()
+    
+}
+
+fn get_first_space_word(input: &str) -> &str {
+    let byte_str = input.as_bytes();
+
+    for (i, &item) in byte_str.iter().enumerate(){
+        if item == b' '{
+            return &input[..i];
+        }
+    };
+
+    &input[..]
 }
